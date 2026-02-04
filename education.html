@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unique Blend | Gerald Sanchez</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FAF7F2;
+      --cream-dark: #F0EBE3;
+      --cobalt: #0047AB;
+      --cobalt-hover: #003380;
+      --cobalt-light: rgba(0, 71, 171, 0.1);
+      --brown-dark: #3D2B1F;
+      --brown-medium: #6B5344;
+      --brown-light: #A89485;
+      --brown-border: #D4C8BC;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--brown-dark);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--brown-border);
+      z-index: 1000;
+      padding: 0 60px;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--brown-dark);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-short {
+      display: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--brown-dark);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--brown-medium);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a:not(.cta-btn):hover {
+      color: var(--brown-dark);
+    }
+
+    .nav-links a:not(.cta-btn)::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--cobalt);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:not(.cta-btn):hover::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--brown-dark);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .cta-btn {
+      background: var(--cobalt);
+      color: white !important;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: var(--cobalt-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Mobile Navigation Dropdown */
+    .mobile-nav {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      padding: 12px 16px;
+      background: var(--cream);
+      border: 1px solid var(--brown-border);
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--brown-medium);
+      cursor: pointer;
+      min-width: 160px;
+      transition: border-color 0.3s ease;
+    }
+
+    .nav-dropdown-toggle:hover {
+      border-color: var(--brown-light);
+    }
+
+    .nav-dropdown-toggle svg {
+      width: 16px;
+      height: 16px;
+      color: var(--brown-light);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-dropdown.active .nav-dropdown-toggle svg {
+      transform: rotate(180deg);
+    }
+
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: var(--cream);
+      border: 1px solid var(--brown-border);
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(61, 43, 31, 0.1);
+      overflow: hidden;
+      z-index: 100;
+    }
+
+    .nav-dropdown.active .nav-dropdown-menu {
+      display: block;
+    }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--brown-medium);
+      text-decoration: none;
+      border-bottom: 1px solid var(--brown-border);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-dropdown-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-dropdown-menu a:hover {
+      background: var(--cream-dark);
+      color: var(--brown-dark);
+    }
+
+    .nav-dropdown-menu a.active {
+      color: var(--cobalt);
+      background: var(--cream-dark);
+    }
+
+    .mobile-cta {
+      background: var(--cobalt);
+      color: white !important;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .mobile-cta:hover {
+      background: var(--cobalt-hover);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 150px 70px 85px;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin-bottom: 0;
+    }
+
+    .hero-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--cobalt);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--brown-dark);
+      margin-bottom: 40px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      font-style: italic;
+      color: var(--cobalt);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .hero-description {
+      font-size: 1.35rem;
+      color: var(--brown-medium);
+      line-height: 1.8;
+      text-align: center;
+      max-width: 900px;
+      margin: 40px auto 0;
+    }
+
+    /* Blend Visual Section */
+    .blend-section {
+      padding: 75px 60px 80px;
+      background: var(--cream-dark);
+    }
+
+    .blend-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .blend-intro {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .blend-intro h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 500;
+      color: var(--brown-dark);
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .blend-intro p {
+      font-size: 1.45rem;
+      color: var(--brown-medium);
+      line-height: 1.7;
+    }
+
+    /* Discipline Cards */
+    .disciplines-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .discipline-card {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--brown-border);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .discipline-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(61, 43, 31, 0.08);
+    }
+
+    .discipline-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--cobalt);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .discipline-card:hover::before {
+      opacity: 1;
+    }
+
+    .discipline-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--cobalt-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .discipline-icon svg {
+      width: 22px;
+      height: 22px;
+      color: var(--cobalt);
+    }
+
+    .discipline-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--cobalt);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .discipline-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--brown-dark);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .discipline-card p {
+      font-size: 0.85rem;
+      color: var(--brown-medium);
+      line-height: 1.6;
+    }
+
+    .discipline-skills {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--brown-medium);
+      background: var(--cream-dark);
+      padding: 4px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--brown-border);
+    }
+
+    /* Convergence Section */
+    .convergence {
+      padding: 30px 25px;
+      background: var(--cream);
+    }
+
+    .convergence-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .convergence-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: var(--brown-dark);
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .convergence-content p {
+      font-size: 1.1rem;
+      color: var(--brown-medium);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .convergence-content blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--cobalt);
+      border-left: 3px solid var(--cobalt);
+      padding-left: 24px;
+      margin-top: 30px;
+    }
+
+    /* Visual Diagram */
+    .convergence-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .venn-diagram {
+      position: relative;
+      width: 420px;
+      height: 390px;
+    }
+
+    .venn-circle {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .venn-circle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .venn-cs {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(107, 83, 68, 0.15);
+      border: 2px solid var(--brown-medium);
+      color: var(--brown-dark);
+    }
+
+    .venn-cs:hover {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .venn-sociology {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background: rgba(107, 83, 68, 0.15);
+      border: 2px solid var(--brown-medium);
+      color: var(--brown-dark);
+    }
+
+    .venn-sociology:hover {
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .venn-business {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(61, 43, 31, 0.12);
+      border: 2px solid var(--brown-dark);
+      color: var(--brown-dark);
+    }
+
+    .venn-business:hover {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .venn-religion {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      background: rgba(168, 148, 133, 0.2);
+      border: 2px solid var(--brown-light);
+      color: var(--brown-dark);
+    }
+
+    .venn-religion:hover {
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .venn-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130px;
+      height: 130px;
+      background: var(--cobalt);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 71, 171, 0.3);
+      z-index: 10;
+    }
+
+    /* Connecting lines */
+    .venn-diagram::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      height: 240px;
+      border: 1px dashed var(--brown-border);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 30px 30px;
+      background: var(--brown-dark);
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 14px;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      color: var(--cream);
+      margin-bottom: 25px;
+    }
+
+    .cta-section .btn-primary {
+      display: inline-block;
+      background: var(--cobalt);
+      color: white;
+      padding: 16px 36px;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .cta-section .btn-primary:hover {
+      background: var(--cobalt-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      padding: 25px 45px;
+      background: var(--brown-dark);
+      color: var(--cream);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: 0.8rem;
+      color: var(--brown-light);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .disciplines-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .disciplines-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .convergence-container {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .convergence-visual {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-container {
+        height: 70px;
+      }
+
+      /* Hide desktop nav, show mobile nav */
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-nav {
+        display: flex;
+      }
+
+      /* Show short logo, hide full logo */
+      .logo {
+        display: none;
+      }
+
+      .logo-short {
+        display: block;
+      }
+      
+      .hero, .blend-section, .convergence, .cta-section {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .disciplines-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .discipline-card {
+        padding: 24px;
+      }
+
+      .venn-diagram {
+        width: 320px;
+        height: 320px;
+      }
+
+      .venn-circle {
+        width: 110px;
+        height: 110px;
+        font-size: 0.75rem;
+      }
+
+      .venn-center {
+        width: 100px;
+        height: 100px;
+        font-size: 0.8rem;
+      }
+
+      .venn-diagram::before {
+        width: 190px;
+        height: 190px;
+      }
+      
+      .footer-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-content {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .discipline-card {
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .discipline-card:nth-child(1) { animation-delay: 0.1s; }
+    .discipline-card:nth-child(2) { animation-delay: 0.2s; }
+    .discipline-card:nth-child(3) { animation-delay: 0.3s; }
+    .discipline-card:nth-child(4) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">Gerald Sanchez</a>
+      <a href="index.html" class="logo-short">GS</a>
+
+      <div class="nav-links">
+        <a href="index.html">Design</a>
+        <a href="education.html" class="active">Unique Blend</a>
+        <a href="bio.html">Bio</a>
+        <a href="index.html#contact" class="cta-btn">Contact</a>
+      </div>
+
+      <div class="mobile-nav">
+        <div class="nav-dropdown" id="navDropdown">
+          <button class="nav-dropdown-toggle" id="dropdownToggle">
+            <span id="currentPage">Unique Blend</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html">Design</a>
+            <a href="education.html" class="active">Unique Blend</a>
+            <a href="bio.html">Bio</a>
+          </div>
+        </div>
+        <a href="index.html#contact" class="mobile-cta">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-label">My approach</p>
+      <h1>A <span>unique blend</span> of technology, people, culture, and economics</h1>
+    </div>
+    <p class="hero-description">My dual degree in Computer Science and Sociology, paired with a minor in Religion and concentration in Business, gives me a distinctive lens for understanding users and crafting meaningful digital experiences.</p>
+  </section>
+
+  <!-- Disciplines Section -->
+  <section class="blend-section">
+    <div class="blend-container">
+      <div class="blend-intro">
+        <h2>Four Disciplines, <span style="color: var(--cobalt);">One Purpose</span></h2>
+        <p>Each field of study contributes a critical perspective to how I approach UX/UI design—from the logical precision of code to the nuanced understanding of human and social behavior.</p>
+      </div>
+
+      <div class="disciplines-grid">
+        <!-- Computer Science -->
+        <div class="discipline-card">
+          <div class="discipline-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+            </svg>
+          </div>
+          <p class="discipline-label">Major</p>
+          <h3>Computer Science</h3>
+          <p>The technical foundation that enables me to understand system architecture, think algorithmically, and bridge the gap between design vision and technical implementation. I can speak fluently with developers and build functional prototypes.</p>
+          <div class="discipline-skills">
+            <span class="skill-tag">Front-End Development</span>
+            <span class="skill-tag">System Thinking</span>
+            <span class="skill-tag">Prototyping</span>
+            <span class="skill-tag">Technical Feasibility</span>
+          </div>
+        </div>
+
+        <!-- Sociology -->
+        <div class="discipline-card">
+          <div class="discipline-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+            </svg>
+          </div>
+          <p class="discipline-label">Major</p>
+          <h3>Sociology</h3>
+          <p>Understanding people isn't optional in UX—it's everything. Sociology taught me to analyze group dynamics, recognize behavioral patterns, and design for diverse populations. I see users not just as data points, but as complex individuals.</p>
+          <div class="discipline-skills">
+            <span class="skill-tag">User Research</span>
+            <span class="skill-tag">Behavioral Analysis</span>
+            <span class="skill-tag">Inclusive Design</span>
+            <span class="skill-tag">Empathy Mapping</span>
+          </div>
+        </div>
+
+        <!-- Religion -->
+        <div class="discipline-card">
+          <div class="discipline-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+          </div>
+          <p class="discipline-label">Minor</p>
+          <h3>Religion</h3>
+          <p>Studying religion deepened my appreciation for cultural nuance, symbolic meaning, and the values that shape human experience. This perspective helps me design interfaces that respect diverse worldviews and create genuinely meaningful interactions.</p>
+          <div class="discipline-skills">
+            <span class="skill-tag">Cultural Sensitivity</span>
+            <span class="skill-tag">Symbolic Design</span>
+            <span class="skill-tag">Ethics in Design</span>
+            <span class="skill-tag">Global Perspective</span>
+          </div>
+        </div>
+
+        <!-- Business -->
+        <div class="discipline-card">
+          <div class="discipline-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+          </div>
+          <p class="discipline-label">Integrative Concentration</p>
+          <h3>Business</h3>
+          <p>Great design must also be viable design. My business training ensures I understand market dynamics, stakeholder needs, and how to balance user delight with organizational goals. I design experiences that work for users and the bottom line.</p>
+          <div class="discipline-skills">
+            <span class="skill-tag">Product Strategy</span>
+            <span class="skill-tag">Stakeholder Management</span>
+            <span class="skill-tag">ROI Thinking</span>
+            <span class="skill-tag">Market Awareness</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Convergence Section -->
+  <section class="convergence">
+    <div class="convergence-container">
+      <div class="convergence-content">
+        <h2>Where It All Converges</h2>
+        <p>UX/UI design sits at the intersection of technology, human behavior, cultural context, and business viability. My educational background isn't just diverse—it's strategically aligned with what great design demands.</p>
+        <p>When I approach a design challenge, I'm not just thinking about pixels and interactions. I'm considering the technical constraints, the human motivations, the cultural implications, and the business outcomes—all at once.</p>
+        <blockquote>"The best interfaces feel invisible because they honor both the user and the system."</blockquote>
+      </div>
+
+      <div class="convergence-visual">
+        <div class="venn-diagram">
+          <a href="https://www.oberlin.edu/arts-and-sciences/departments/computer-science" target="_blank" class="venn-circle venn-cs">Computer<br>Science</a>
+          <a href="https://www.oberlin.edu/arts-and-sciences/departments/sociology" target="_blank" class="venn-circle venn-sociology">Sociology</a>
+          <a href="https://www.oberlin.edu/arts-and-sciences/departments/business" target="_blank" class="venn-circle venn-business">Business</a>
+          <a href="https://www.oberlin.edu/arts-and-sciences/departments/religion" target="_blank" class="venn-circle venn-religion">Religion</a>
+          <div class="venn-center">UX/UI<br>Design</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>See This Approach in Action</h2>
+    <p>Explore my most relevant case studies to see how these disciplines shape real design outcomes!</p>
+    <a href="index.html#projects" class="btn-primary">View My Work</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <p class="footer-text">© 2026 Gerald Sanchez. Crafted with Intention.</p>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/gerald-sanchez-156639206" target="_blank">LinkedIn</a>
+        <a href="#">Dribbble</a>
+        <a href="#">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const dropdown = document.getElementById('navDropdown');
+    const dropdownToggle = document.getElementById('dropdownToggle');
+
+    // Toggle dropdown on click
+    dropdownToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    // Close dropdown when clicking a link
+    const dropdownLinks = dropdown.querySelectorAll('.nav-dropdown-menu a');
+    dropdownLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        dropdown.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
